@@ -11,9 +11,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -22,14 +24,50 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/login")
+                .permitAll()
+                .requestMatchers("/newadmin")
+                .permitAll()
+
+
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
+
         return http.build();
     }
+
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+//                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChainForAdmins(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests((authz) -> authz
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .anyRequest().authenticated()
+//                );
+//        return http.build();
+//    }
 
 
 }
