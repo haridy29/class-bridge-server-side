@@ -6,7 +6,10 @@ import com.example.classbridge.config.security.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,12 +20,17 @@ public class AuthenticationService {
     private final UserRepo userRepo;
 
     public void login(HttpServletResponse response, LoginDto loginDTO) {
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+        try {
+            authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+            var user = userRepo.findByUsername(loginDTO.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            var jwtToken = jwtService.generateToken(user);
+            response.addHeader("Authorization", jwtToken);
 
-        var user = userRepo.findByUsername(loginDTO.getUsername())
-                .orElseThrow();
+        } catch (AuthenticationException ex) {
 
-        var jwtToken = jwtService.generateToken(user);
-        response.addHeader("Authorization", jwtToken);
+            throw new AuthenticationServiceException("Invalid username or password", ex);
+        }
     }
+
 }

@@ -25,7 +25,7 @@ public class HomeController {
             service.login(response, loginDTO);
             return ResponseEntity.ok(new ResponseMessage("Success"));
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("Invalid username or password"));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("Invalid username or password"));
         }
     }
 

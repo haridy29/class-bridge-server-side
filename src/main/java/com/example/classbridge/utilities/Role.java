@@ -1,5 +1,6 @@
 package com.example.classbridge.utilities;
 
 public enum Role {
-    ADMIN
+    ROLE_ADMIN,
+    ROLE_PROFESSOR
 }
