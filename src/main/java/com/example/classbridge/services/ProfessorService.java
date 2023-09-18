@@ -25,7 +25,7 @@ public class ProfessorService {
             newProfessor.setUsername(username);
             String encodedPassword = passwordEncoder.encode(password);
             newProfessor.setPassword(encodedPassword);
-            newProfessor.setRole(Role.PROFESSOR);
+            newProfessor.setRole(Role.ROLE_PROFESSOR);
             Profile profile = new Profile();
             newProfessor.setProfile(profile);
             return professorRepository.save(newProfessor);

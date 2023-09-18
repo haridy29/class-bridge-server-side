@@ -7,6 +7,7 @@ import com.example.classbridge.entities.Profile;
 import com.example.classbridge.entities.User;
 import com.example.classbridge.services.AuthenticationService;
 import com.example.classbridge.services.UserService;
+import com.example.classbridge.utilities.ResponseMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class HomeController {
     private final AuthenticationService service;
     private final UserService userService;
@@ -33,7 +36,7 @@ public class HomeController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(HttpServletResponse response, @Valid @RequestBody LoginDto loginDTO) {
+    public ResponseEntity<ResponseMessage> login(HttpServletResponse response, @Valid @RequestBody LoginDto loginDTO) {
         try {
             // Authenticate the user
             Authentication authentication = authenticationManager.authenticate(
@@ -46,27 +49,12 @@ public class HomeController {
 
             response.addHeader("Authorization", "Bearer " + jwtToken);
             System.out.println("User Roles: " + authentication.getAuthorities());
-            return ResponseEntity.ok("Success");
+            return ResponseEntity.ok(new ResponseMessage("Login Successful"));
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("Invalid username or password"));
         }
     }
 
-
-
-
-
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(HttpServletResponse response, @Valid @RequestBody LoginDto loginDTO) {
-//        try {
-//
-//            service.login(response, loginDTO);
-//            return ResponseEntity.ok("Success");
-//
-//        } catch (Exception ex) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid username or password");
-//        }
-//    }
 
     @PostMapping("/newadmin")
     public ResponseEntity<User> newUser(@RequestBody @Valid User user) {

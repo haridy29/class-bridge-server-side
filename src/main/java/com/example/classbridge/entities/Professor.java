@@ -9,10 +9,10 @@ import jakarta.persistence.Table;
 public class Professor extends User {
 
     public Professor(String username, String password, Profile profile) {
-        super(username, password, Role.PROFESSOR, profile);
+        super(username, password, Role.ROLE_PROFESSOR, profile);
     }
 
     public Professor() {
-        this.setRole(Role.PROFESSOR);
+        this.setRole(Role.ROLE_PROFESSOR);
     }
 }
