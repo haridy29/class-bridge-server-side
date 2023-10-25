@@ -1,6 +1,10 @@
 package com.example.classbridge.controllers;
 
+import com.example.classbridge.config.exception.BadRequestException;
+import com.example.classbridge.dtos.CourseDto;
+import com.example.classbridge.entities.Course;
 import com.example.classbridge.entities.Professor;
+import com.example.classbridge.services.CourseService;
 import com.example.classbridge.services.ProfessorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +22,16 @@ public class AdminController {
 
     private final ProfessorService professorService;
     private final PasswordEncoder passwordEncoder;
+    private final CourseService courseService;
 
     @PostMapping("/addproffesor")
     public ResponseEntity<Professor> createProfessor(@RequestBody @Valid Professor professor) {
         Professor createdProfessor = professorService.createProfessor(professor.getUsername(), professor.getPassword());
         return ResponseEntity.ok(createdProfessor);
+    }
+
+    @PostMapping("/courses")
+    public Course addCourse(@RequestBody @Valid CourseDto courseDto) throws BadRequestException {
+        return courseService.addCourse(courseDto);
     }
 }
