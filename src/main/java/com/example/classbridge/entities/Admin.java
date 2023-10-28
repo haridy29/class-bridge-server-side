@@ -3,11 +3,13 @@ package com.example.classbridge.entities;
 
 import com.example.classbridge.utilities.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "admin")
 public class Admin extends User {
     public Admin() {
-        super.setRole(Role.ROLE_ADMIN);
+
     }
 
     public Admin(String id, String username, String password, Profile profile) {
