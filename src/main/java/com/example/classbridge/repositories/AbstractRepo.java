@@ -9,5 +9,8 @@ import java.util.Optional;
 @NoRepositoryBean
 public interface AbstractRepo <T extends User> extends JpaRepository<T, String> {
     Optional<T> findByUsername(String username);
+    boolean existsByUsernameIgnoreCase(String username);
+    boolean existsByProfilePhone(String profile_phone);
 
+    boolean existsByProfileEmail(String profile_email);
 }
