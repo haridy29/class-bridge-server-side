@@ -10,4 +10,5 @@ import java.util.List;
 public interface CourseClassService {
     ResponseEntity<CourseClass> createCourseClass(CourseClassDto courseClassDto) throws BadRequestException;
 
+    List<CourseClass> getAllCourseClasses();
 }

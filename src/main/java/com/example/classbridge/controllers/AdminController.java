@@ -50,6 +50,9 @@ public class AdminController {
         return courseClassService.createCourseClass(courseClassDto);
     }
 
-
+    @GetMapping("course-classes")
+    public List<CourseClass> createCourseClass() {
+        return courseClassService.getAllCourseClasses();
+    }
 
 }

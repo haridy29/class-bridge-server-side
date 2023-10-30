@@ -50,5 +50,10 @@ public class CourseClassServiceImpl implements CourseClassService {
         return ResponseEntity.ok(courseClass);
     }
 
+    @Override
+    public List<CourseClass> getAllCourseClasses() {
+        return courseClassRepo.findAll();
+    }
+
 
 }
