@@ -1,5 +1,6 @@
 package com.example.classbridge.services;
 
+import com.example.classbridge.entities.CourseClass;
 import com.example.classbridge.entities.Professor;
 import com.example.classbridge.entities.Profile;
 import com.example.classbridge.repositories.ProfessorRepository;
@@ -7,6 +8,8 @@ import com.example.classbridge.utilities.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProfessorService {
@@ -33,5 +36,9 @@ public class ProfessorService {
             ex.printStackTrace();
             throw new RuntimeException("Failed to create new Professor ! " + ex.getMessage());
         }
+    }
+
+    public List<CourseClass> getMyCourseClasses(String username) {
+        return professorRepository.findByUsername(username).get().getCourseClasses();
     }
 }

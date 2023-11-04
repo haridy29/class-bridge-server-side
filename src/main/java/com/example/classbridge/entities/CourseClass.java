@@ -22,12 +22,11 @@ public class CourseClass {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     private Professor professor;
 
     private Year year;
